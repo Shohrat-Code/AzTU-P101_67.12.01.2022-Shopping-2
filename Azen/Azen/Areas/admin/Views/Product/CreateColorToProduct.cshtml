@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "CreateColorToProduct";
+}
+
+<div class="container">
+    <form asp-area="admin" asp-controller="product" asp-action="CreateColorToProduct" method="post" enctype="multipart/form-data">
+        <div class="itemContainer">
+            <div class="row ColorImageItem">
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <label for="[0].ColorId" class="form-label">Color</label>
+                        <select class="form-control" name="[0].ColorId" asp-items="@(new SelectList(ViewBag.Colors, "Id", "Name"))">
+                            <option selected>Select color</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mb-3">
+                        <label for="[0].Image" class="form-label">Image</label>
+                        <input type="file" class="form-control" name="[0].Image" multiple>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-success" id="addNewItem">+</button>
+                <button type="submit" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+        
+    </form>
+</div>
+

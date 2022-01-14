@@ -1,0 +1,29 @@
+﻿@model List<SizeColorToProduct>
+
+<ul class="woocommerce-mini-cart cart_list product_list_widget ">
+    @foreach (var item in Model)
+    {
+        DateTime? discountDate = item.DiscountDate;
+        <li class="woocommerce-mini-cart-item mini_cart_item">
+            <a href="#" class="remove remove_from_cart_button">
+                <i class="zmdi zmdi-close"></i>
+            </a>
+            <a href="simple-product.html">
+                <img src="~/Uploads/@item.ColorToProduct.ProductImages.FirstOrDefault().Image"
+                     class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">@item.ColorToProduct.Product.Name
+                </a>
+                <span class="quantity">Qty : 1</span>
+                <span class="price">
+                    <span class="woocommerce-Price-amount amount">
+                        <span class="woocommerce-Price-currencySymbol">$</span>@(discountDate!=null && discountDate>DateTime.Now?item.DiscountPrice:item.Price)
+                    </span>
+                </span>
+            </li>
+        }
+</ul>
+
+<p class="woocommerce-mini-cart__total total">
+    <strong>Total:</strong> <span class="woocommerce-Price-amount amount">
+        <span class="woocommerce-Price-currencySymbol">$</span>@Model.Sum(s=> s.DiscountDate != null && s.DiscountDate > DateTime.Now ? s.DiscountPrice : s.Price)
+    </span>
+</p>

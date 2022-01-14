@@ -1,0 +1,62 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="container">
+    <form class="row" asp-area="admin" asp-controller="product" asp-action="create" method="post">
+        <div class="col-lg-12">
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label asp-for="@Model.Name" class="form-label">Name</label>
+                <input class="form-control" asp-for="@Model.Name">
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.About" class="form-label">About</label>
+                <input class="form-control" asp-for="@Model.About">
+                <span asp-validation-for="@Model.About" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="@Model.SKU" class="form-label">SKU</label>
+                <input class="form-control" asp-for="@Model.SKU">
+                <span asp-validation-for="@Model.SKU" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="mb-3">
+                <label asp-for="@Model.CategoryId" class="form-label">Category</label>
+                <select class="form-control" asp-for="@Model.CategoryId" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
+                    <option selected>Select category</option>
+                </select>
+                <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.BrandId" class="form-label">Brand</label>
+                <select class="form-control" asp-for="@Model.BrandId" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Name"))">
+                    <option selected>Select brand</option>
+                </select>
+                <span asp-validation-for="@Model.BrandId" class="text-danger"></span>
+            </div>
+
+
+            <div class="mb-3">
+                <label asp-for="@Model.Description" class="form-label">Description</label>
+                <textarea class="form-control" asp-for="@Model.Description"></textarea>
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <button type="submit" class="btn btn-primary">Next</button>
+
+        </div>
+
+    </form>
+</div>
+

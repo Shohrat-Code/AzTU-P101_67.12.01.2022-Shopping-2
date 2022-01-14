@@ -1,0 +1,102 @@
+﻿@model VmContact
+@inject IHttpContextAccessor _httpContext
+
+<div class="site page-content">
+    <div class="breadcrumb-contact-us breadcrumb-section section-box">
+        <div class="container breadcrumb-inner">
+            <div class="breadcrumbs-wrapper">
+                <ul class="phys-breadcrumb">
+                    <li><a href="index.html" class="home">Home</a></li>
+                    <li>Contact</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-12">
+                    <h2 class="heading-title heading-contact heading-contact-1">CONTACT INFO</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <div class="infor-footer">
+                        <ul>
+                            <li>
+                                <i class="zmdi zmdi-home"></i> 3064 Geneva Street , New York , USA
+                            </li>
+                            <li>
+                                <i class="zmdi zmdi-phone"></i> +1-202-555-0157
+                            </li>
+                            <li>
+                                <i class="zmdi zmdi-email"></i> Azenfashion@gmail.com
+                            </li>
+                            <li>
+                                <i class="zmdi zmdi-time"></i> Monday - Saturday: 8:00 am - 18:00 pm
+                                <p style="margin-left:25px;">
+                                    Sunday : Closed
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="share-infor">
+                        <a href="#"># FACEBOOK</a>
+                        <a href="#"># TWITTER</a>
+                        <a href="#"># INSTAGRAM</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-12">
+                    <h2 class="heading-title heading-contact">send message</h2>
+                    @if (_httpContext.HttpContext.Session.GetString("Success") != null)
+                    {
+                        <div class="alert alert-success">
+                            @_httpContext.HttpContext.Session.GetString("Success")
+                        </div>
+
+                        _httpContext.HttpContext.Session.Remove("Success");
+                    }
+
+                    @if (_httpContext.HttpContext.Session.GetString("Error") != null)
+                    {
+                        <div class="alert alert-danger">
+                            @_httpContext.HttpContext.Session.GetString("Error")
+                        </div>
+
+                        _httpContext.HttpContext.Session.Remove("Error");
+                    }
+                    <form asp-controller="contact" asp-action="message" method="post" class="wpcf7-form">
+                        <p>
+                            <label>
+                                <span class="wpcf7-form-control-wrap full-name">
+                                    <input asp-for="@Model.Message.Fullname" size="40"
+                                           class="wpcf7-form-control wpcf7-text" aria-invalid="false">
+                                </span>
+                            </label><br>
+                            <label>
+                                <span class="wpcf7-form-control-wrap your-email">
+                                    <input type="email" asp-for="@Model.Message.Email" size="40"
+                                           class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email"
+                                           aria-required="true" aria-invalid="false">
+                                </span>
+                            </label>
+                            <br>
+                            <label class="your-message">
+                                <span class="wpcf7-form-control-wrap your-message">
+                                    <textarea asp-for="@Model.Message.Text" cols="40" rows="10"
+                                              class="wpcf7-form-control wpcf7-textarea"></textarea>
+                                </span>
+                            </label>
+                            <br>
+                            @*<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit">*@
+                            <button type="submit" class="wpcf7-form-control wpcf7-submit">Send</button>
+                            <span class="ajax-loader"></span>
+                        </p>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="resp-map-contact">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317715.711923248!2d-0.3817835530812759!3d51.52873519800852!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5addd52a99!2sLondon%2C%20UK!5e0!3m2!1sen!2s!4v1579168161258!5m2!1sen!2s"
+                allowfullscreen=""></iframe>
+    </div>
+</div>

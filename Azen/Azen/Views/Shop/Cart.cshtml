@@ -1,0 +1,148 @@
+﻿@model List<SizeColorToProduct>
+
+<div class="site page-content">
+
+    <div class="breadcrumb-contact-us breadcrumb-section section-box">
+        <div class="container breadcrumb-inner">
+            <div class="breadcrumbs-wrapper">
+                <ul class="phys-breadcrumb">
+                    <li><a href="index.html" class="home">Home</a></li>
+                    <li><a href="shop.html" class="home">Shop</a></li>
+                    <li>Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="container">
+            <div class="row">
+                <div class="site-main col-sm-12 full-width">
+
+                    <div class="entry-content">
+                        <div class="woocommerce">
+                            <form class="woocommerce-cart-form" action="#" method="post">
+
+                                <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-remove">&nbsp;</th>
+                                            <th class="product-thumbnail">&nbsp;</th>
+                                            <th class="product-name">Product</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-subtotal">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in Model)
+                                        {
+                                            DateTime? discountDate = item.DiscountDate;
+                                            <tr class="woocommerce-cart-form__cart-item cart_item">
+
+                                                <td class="product-remove">
+                                                    <a href="#" class="remove">×</a>
+                                                </td>
+
+                                                <td class="product-thumbnail">
+                                                    <a href="simple-product.html">
+                                                        <img src="~/Uploads/@item.ColorToProduct.ProductImages.FirstOrDefault().Image"
+                                                             class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                                             alt="">
+                                                    </a>
+                                                </td>
+
+                                                <td class="product-name" data-title="Product">
+                                                    <a href="simple-product.html">Hyper shoe</a>
+                                                </td>
+
+                                                <td class="product-price" data-title="Price">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <span class="woocommerce-Price-currencySymbol">$</span>@(discountDate != null && discountDate > DateTime.Now ? item.DiscountPrice : item.Price)
+                                                    </span>
+                                                </td>
+
+                                                <td class="product-quantity" data-title="Quantity">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="prev btn ">-</button>
+                                                        <button type="button" class="show-number btn ">1</button>
+                                                        <button type="button" class="next btn ">+</button>
+                                                    </div>
+                                                </td>
+
+                                                <td class="product-subtotal" data-title="Subtotal">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <span class="woocommerce-Price-currencySymbol">$</span>@(discountDate != null && discountDate > DateTime.Now ? 1 * item.DiscountPrice : 1 * item.Price)
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </form>
+                            <div class="cart-collaterals">
+                                <div class="cart_totals ">
+                                    <h2>Cart totals</h2>
+                                    <table class="shop_table shop_table_responsive">
+                                        <tbody>
+                                            @{decimal? subTotal = Model.Sum(s => s.DiscountDate != null && s.DiscountDate > DateTime.Now ? s.DiscountPrice : s.Price);}
+                                            <tr class="cart-subtotal">
+                                                <th>Subtotal</th>
+                                                <td data-title="Subtotal">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        <span class="woocommerce-Price-currencySymbol">$</span>@subTotal
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr class="cart-subtotal">
+                                                <th>Shipping</th>
+                                                <td data-title="Subtotal">
+                                                    <span class="woocommerce-Price-amount amount">
+                                                        @if (subTotal >= 100)
+                                                        {
+                                                            <span class="woocommerce-Price-currencySymbol">Free</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="woocommerce-Price-currencySymbol">$</span><span>10</span>
+                                                        }
+
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <th>Total</th>
+                                                <td data-title="Total">
+                                                    <strong>
+                                                        <span class="woocommerce-Price-amount amount">
+                                                            @if (subTotal >= 100)
+                                                            {
+                                                                <span class="woocommerce-Price-currencySymbol">$</span>@subTotal
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="woocommerce-Price-currencySymbol">$</span>@(subTotal+10)
+                                                            }
+                                                        </span>
+                                                    </strong>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="wc-proceed-to-checkout">
+                                        <a asp-controller="shop" asp-action="checkout"
+                                           class="checkout-button button alt wc-forward">
+                                            Proceed to checkout
+                                        </a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- .entry-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

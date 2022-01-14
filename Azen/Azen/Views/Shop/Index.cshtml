@@ -1,0 +1,322 @@
+﻿@model VmProduct
+@inject IHttpContextAccessor _httpContext
+@{
+
+    string cart = _httpContext.HttpContext.Request.Cookies["cart"];
+    List<string> cartList = new List<string>();
+    if (!string.IsNullOrEmpty(cart))
+    {
+        cartList = cart.Split("-").ToList();
+    }
+}
+
+<div class="site page-content">
+    <div class="breadcrumb-contact-us breadcrumb-section section-box">
+        <div class="container breadcrumb-inner">
+            <h1 class="heading_primary">Shop</h1>
+            <div class="breadcrumbs-wrapper">
+                <ul class="phys-breadcrumb">
+                    <li><a href="index.html" class="home">Home</a></li>
+                    <li>Shop</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="container">
+            <div class="row">
+                <div class="site-main col-sm-9 alignleft">
+
+
+                    <div class="wc-sc-product woocommerce featured-layout-1">
+                        <div class="inner-sc-product">
+                            <ul class="products columns-3">
+                                @foreach (var item in Model.Products)
+                                {
+
+                                    <li class="product">
+                                        <div class="inner-item-product">
+                                            <div class="product-image">
+                                                @{
+                                                    DateTime? itemDiscount = item.ColorToProducts.FirstOrDefault().SizeColorToProducts.FirstOrDefault().DiscountDate;
+                                                    if (itemDiscount != null && itemDiscount > DateTime.Now)
+                                                    {
+                                                        <span class="onsale">Sale</span>
+                                                    }
+                                                }
+                                                <a href="simple-product.html" class="wp-post-image">
+                                                    <img src="~/Uploads/@item.ColorToProducts.FirstOrDefault().ProductImages.FirstOrDefault().Image" alt="">
+                                                    <img src="~/Uploads/@item.ColorToProducts.LastOrDefault().ProductImages.FirstOrDefault().Image" class="product-change-images" alt="">
+                                                </a>
+                                                <div class="box-hover">
+                                                    <a href="javascript:void(0)" class="quick-view" data-toggle="modal" data-target="#quickview">
+
+                                                    </a>
+                                                    <div class="yith-wcwl-add-to-wishlist">
+                                                        <a href="#" class="add_to_wishlist single_add_to_wishlist">
+                                                        </a>
+                                                    </div>
+                                                    <a asp-controller="shop" asp-action="addToCart" asp-route-sizeColorProductId="@item.ColorToProducts.FirstOrDefault().SizeColorToProducts.FirstOrDefault().Id" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart @(cartList.Any(i=>i==item.ColorToProducts.FirstOrDefault().SizeColorToProducts.FirstOrDefault().Id.ToString())?"inCart":"")"></a>
+                                                </div>
+                                            </div>
+                                            <div class="wrapper-content-item">
+                                                <h2 class="woocommerce-loop-product_title">
+                                                    <a href="simple-product.html">
+                                                        @item.Name
+                                                    </a>
+                                                </h2>
+                                                <span class="price">
+                                                    @if (itemDiscount != null && itemDiscount > DateTime.Now)
+                                                    {
+                                                        <del>
+                                                            <span class="woocommerce-Price-amount amount">
+                                                                <span class="woocommerce-Price-currencySymbol">$</span>@item.ColorToProducts.FirstOrDefault().SizeColorToProducts.FirstOrDefault().Price
+                                                            </span>
+                                                        </del>
+                                                        <ins>
+                                                            <span class="woocommerce-Price-amount amount">
+                                                                <span class="woocommerce-Price-currencySymbol">$</span>@item.ColorToProducts.FirstOrDefault().SizeColorToProducts.FirstOrDefault().DiscountPrice
+                                                            </span>
+                                                        </ins>
+                                                    }
+                                                    else
+                                                    {
+                                                        <ins>
+                                                            <span class="woocommerce-Price-amount amount">
+                                                                <span class="woocommerce-Price-currencySymbol">$</span>@item.ColorToProducts.FirstOrDefault().SizeColorToProducts.FirstOrDefault().Price
+                                                            </span>
+                                                        </ins>
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.Page==1?"disabled":"")">
+                                <a class="page-link pageItemCount" asp-controller="shop" asp-action="index" asp-route-page="@(Model.Page-1)" asp-route-itemCount="@Model.ItemCount">Previous</a>
+                            </li>
+                            @for (int i = 1; i <= Model.PageCount; i++)
+                            {
+                                <li class="page-item @(Model.Page==i?"active":"")" aria-current="page">
+                                    <a class="page-link pageItemCount" asp-controller="shop" asp-action="index" asp-route-page="@i" asp-route-itemCount="@Model.ItemCount">@i</a>
+                                </li>
+                            }
+                            <li class="page-item @(Model.Page==Model.PageCount?"disabled":"")">
+                                <a class="page-link pageItemCount" asp-controller="shop" asp-action="index" asp-route-page="@(Model.Page+1)" asp-route-itemCount="@Model.ItemCount">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+
+
+                    <select id="itemCount">
+                        @for (int i = 3; i < 10; i += 3)
+                        {
+                            if (Model.ItemCount == i)
+                            {
+                                <option selected value="@i-@Model.PageCount-@Model.Page">@i</option>
+                            }
+                            else
+                            {
+                                <option value="@i-@Model.PageCount-@Model.Page">@i</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="widget-area col-sm-3 alignleft">
+                    <aside id="search-3" class="widget_search">
+                        <form role="search" method="get" class="search-form" action="#">
+                            <label>
+                                <span class="screen-reader-text">Search for:</span>
+                                <input type="search" class="search-field" placeholder="Search …" value="" name="s">
+                            </label>
+                            <input type="submit" class="search-submit" value="Search">
+                        </form>
+                    </aside>
+                    <aside>
+                        <h3 class="widget-title">CATEGORIES</h3>
+                        <ul class="product-categories">
+                            <li class="cat-item">
+                                <a href="shop.html">Accessories</a>
+                            </li>
+                            <li class="cat-item">
+                                <a href="shop.html">Bag</a>
+                            </li>
+                            <li class="cat-item">
+                                <a href="shop.html">Coat</a>
+                            </li>
+                            <li class="cat-item">
+                                <a href="shop.html">Pant</a>
+                            </li>
+                            <li class="cat-item">
+                                <a href="shop.html">Shirt</a>
+                            </li>
+                            <li class="cat-item">
+                                <a href="shop.html">Shoes</a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <aside id="woocommerce_price_filter-2" class="woocommerce widget_price_filter price_ranger_slider">
+                        <h3 class="widget-title">PRICE</h3>
+                        <form method="get" action="#">
+                            <div class="price_slider_wrapper">
+                                <div class="price_slider" data-limit="100" data-min="0" data-max="60">
+
+                                </div>
+                                <div class="price_slider_amount" data-step="10">
+                                    <p class="price_label">
+                                        <label for="ranger_price">Price:</label>
+                                        <input type="text" id="ranger_price">
+                                    </p>
+                                    <button type="submit" class="button">Filter</button>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </aside>
+
+                    <aside>
+                        <h3 class="widget-title">COLOR</h3>
+                        <ul class="woocommerce-widget-layered-nav-list">
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Black</a>
+                                <span class="count">(13)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Light blue</a>
+                                <span class="count">(8)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Red</a>
+                                <span class="count">(9)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">White</a>
+                                <span class="count">(11)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Yellow</a>
+                                <span class="count">(8)</span>
+                            </li>
+                        </ul>
+                    </aside>
+                    <aside>
+                        <h3 class="widget-title">BRAND</h3>
+                        <ul class="woocommerce-widget-layered-nav-list">
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Champion</a>
+                                <span class="count">(7)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Off-White</a>
+                                <span class="count">(1)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Retro king</a>
+                                <span class="count">(5)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">Supreme</a>
+                                <span class="count">(6)</span>
+                            </li>
+                        </ul>
+                    </aside>
+                    <aside>
+                        <h3 class="widget-title">SIZE</h3>
+                        <ul class="woocommerce-widget-layered-nav-list">
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">L</a>
+                                <span class="count">(12)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">M</a>
+                                <span class="count">(10)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">S</a>
+                                <span class="count">(5)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">XL</a>
+                                <span class="count">(11)</span>
+                            </li>
+                            <li class="woocommerce-widget-layered-nav-list__item wc-layered-nav-term ">
+                                <a href="shop.html">XXL</a>
+                                <span class="count">(8)</span>
+                            </li>
+                        </ul>
+                    </aside>
+                    <aside class="woocommerce widget_products">
+                        <h3 class="widget-title">FEATUER PRODUCTS</h3>
+                        <ul class="product_list_widget">
+                            <li>
+                                <a href="simple-product.html">
+                                    <img src="~/images/product/product16.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">
+                                    <span class="product-title">Weaver hat v2</span>
+                                </a>
+                                <span class="woocommerce-Price-amount amount">
+                                    <span class="woocommerce-Price-currencySymbol">$</span>115
+                                </span>
+                            </li>
+                            <li>
+                                <a href="simple-product.html">
+                                    <img src="~/images/product/product15.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">
+                                    <span class="product-title">Weaver hat v1</span>
+                                </a>
+                                <span class="woocommerce-Price-amount amount">
+                                    <span class="woocommerce-Price-currencySymbol">$</span>120
+                                </span>
+                            </li>
+                            <li>
+                                <a href="simple-product.html">
+                                    <img src="~/images/product/sneaker6.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">
+                                    <span class="product-title">Sneaker v6</span>
+                                </a>
+                                <span class="woocommerce-Price-amount amount">
+                                    <span class="woocommerce-Price-currencySymbol">$</span>75
+                                </span>
+                            </li>
+                            <li>
+                                <a href="simple-product.html">
+                                    <img src="~/images/product/sneaker5.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="">
+                                    <span class="product-title">Sneaker v5</span>
+                                </a>
+                                <del>
+                                    <span class="woocommerce-Price-amount amount">
+                                        <span class="woocommerce-Price-currencySymbol">$</span>100
+                                    </span>
+                                </del>
+                                <ins>
+                                    <span class="woocommerce-Price-amount amount">
+                                        <span class="woocommerce-Price-currencySymbol">$</span>70
+                                    </span>
+                                </ins>
+                            </li>
+                        </ul>
+                    </aside>
+                    <aside class="widget_tag_cloud">
+                        <h3 class="widget-title">TAG</h3>
+                        <div class="tagcloud">
+                            <a href="shop.html" class="tag-cloud-link">Fear of God</a>
+                            <a href="shop.html" class="tag-cloud-link">Hypebeast</a>
+                            <a href="shop.html" class="tag-cloud-link">Layer</a>
+                            <a href="shop.html" class="tag-cloud-link">OffWhite</a>
+                            <a href="shop.html" class="tag-cloud-link">Simple</a>
+                            <a href="shop.html" class="tag-cloud-link">Streetwear</a>
+                            <a href="shop.html" class="tag-cloud-link">Unisex</a>
+                            <a href="shop.html" class="tag-cloud-link">Winter</a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #content -->

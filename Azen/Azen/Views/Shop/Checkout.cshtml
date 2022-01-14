@@ -1,0 +1,260 @@
+﻿@model VmOrder
+
+<div class="site page-content">
+    <div class="breadcrumb-contact-us breadcrumb-section section-box">
+        <div class="container breadcrumb-inner">
+            <div class="breadcrumbs-wrapper">
+                <ul class="phys-breadcrumb">
+                    <li><a href="index.html" class="home">Home</a></li>
+                    <li><a href="shop.html" class="home">Shop</a></li>
+                    <li>Checkout</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content-area">
+        <div class="container">
+            <div class="row">
+                <div class="site-main col-sm-12 full-width">
+                    <div class="entry-content">
+                        <div class="woocommerce">
+                            <!--form login-->
+                            <div class="woocommerce-form-login-toggle">
+                                <div class="woocommerce-info">
+                                    Returning customer? <a href="javascript:void(0)" class="showlogin">
+                                        Click
+                                        here to
+                                        login
+                                    </a>
+                                </div>
+                            </div>
+                            <form class="checkout-login woocommerce-form woocommerce-form-login login"
+                                  method="post" style="display: none;">
+
+                                <p>
+                                    If you have shopped with us before, please enter your details below. If you
+                                    are a new customer, please proceed to the Billing section.
+                                </p>
+
+                                <p class="form-row form-row-first">
+                                    <label for="username">
+                                        Username or email&nbsp;<abbr class="required"
+                                                                     title="required">*</abbr>
+                                    </label>
+                                    <input type="text" class="input-text" name="username" id="username"
+                                           autocomplete="username">
+                                </p>
+                                <p class="form-row form-row-last">
+                                    <label for="password">
+                                        Password&nbsp;<abbr class="required"
+                                                            title="required">*</abbr>
+                                    </label>
+                                    <input class="input-text" type="password" name="password" id="password"
+                                           autocomplete="current-password">
+                                </p>
+                                <div class="clear"></div>
+
+
+                                <p class="form-row">
+                                    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
+                                        <input class="woocommerce-form__input woocommerce-form__input-checkbox"
+                                               name="rememberme" type="checkbox" id="rememberme"
+                                               value="forever"> <span>Remember me</span>
+                                    </label>
+                                    <button type="submit"
+                                            class="woocommerce-button button woocommerce-form-login__submit"
+                                            name="login" value="Login">
+                                        Login
+                                    </button>
+                                </p>
+                                <p class="lost_password">
+                                    <a href="#">
+                                        Lost your
+                                        password?
+                                    </a>
+                                </p>
+
+                                <div class="clear"></div>
+                            </form>
+                            <!--end form login-->
+
+                            <form asp-controller="shop" asp-action="checkout" name="checkout" method="post" class="checkout woocommerce-checkout">
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="row" id="customer_details">
+                                            <div class="col-md-6 col-12">
+                                                <div class="woocommerce-billing-fields">
+                                                    <h3>Billing details</h3>
+                                                    <div class="woocommerce-billing-fields__field-wrapper">
+                                                        <p class="form-row form-row-first validate-required"
+                                                           id="billing_first_name_field" data-priority="10">
+                                                            <label for="billing_first_name" class="">
+                                                                First name&nbsp;<abbr class="required"
+                                                                                      title="required">*</abbr>
+                                                            </label>
+                                                            <span class="woocommerce-input-wrapper">
+                                                                <input type="text" class="input-text " asp-for="@Model.CustomUser.Name" autocomplete="given-name">
+                                                            </span>
+                                                        </p>
+
+                                                        <p class="form-row form-row-last validate-required"
+                                                           id="billing_last_name_field" data-priority="20">
+                                                            <label for="billing_last_name" class="">
+                                                                Last
+                                                                name&nbsp;<abbr class="required"
+                                                                                title="required">*</abbr>
+                                                            </label>
+                                                            <span class="woocommerce-input-wrapper">
+                                                                <input type="text" class="input-text "  asp-for="@Model.CustomUser.Surname" autocomplete="family-name">
+                                                            </span>
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide address-field validate-required"
+                                                           id="billing_address_1_field" data-priority="50">
+                                                            <label for="billing_address_1" class="">
+                                                                Address&nbsp;<abbr class="required"
+                                                                                   title="required">*</abbr>
+                                                            </label>
+                                                            <span class="woocommerce-input-wrapper">
+                                                                <input type="text" class="input-text "  asp-for="@Model.CustomUser.Address" autocomplete="address-line1"
+                                                                       data-placeholder="House number and street name">
+                                                            </span>
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide validate-required validate-phone"
+                                                           id="billing_phone_field" data-priority="100">
+                                                            <label for="billing_phone" class="">
+                                                                Phone&nbsp;<abbr class="required"
+                                                                                 title="required">*</abbr>
+                                                            </label>
+                                                            <span class="woocommerce-input-wrapper">
+                                                                <input type="tel" class="input-text "  asp-for="@Model.CustomUser.PhoneNumber" autocomplete="tel">
+                                                            </span>
+                                                        </p>
+
+                                                        <p class="form-row form-row-wide validate-required validate-email"
+                                                           id="billing_email_field" data-priority="110">
+                                                            <label for="billing_email" class="">
+                                                                Email
+                                                                address&nbsp;<abbr class="required"
+                                                                                   title="required">*</abbr>
+                                                            </label>
+                                                            <span class="woocommerce-input-wrapper">
+                                                                <input type="email" class="input-text "  asp-for="@Model.CustomUser.Email">
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <h3 id="order_review_heading">Your order</h3>
+
+                                        <div id="order_review" class="woocommerce-checkout-review-order">
+                                            <table class="shop_table woocommerce-checkout-review-order-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                    @foreach (var item in Model.SizeColorToProducts)
+                                                    {
+                                                        DateTime? discountDate = item.DiscountDate;
+                                                        <tr class="cart_item">
+                                                            <td class="product-name">
+                                                                <div class="review-wrap">
+                                                                    <span class="cart_item_title">	@item.ColorToProduct.Product.Name</span>
+                                                                    <span class="product-quantity">× 1</span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="product-total">
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <span class="woocommerce-Price-currencySymbol">$</span>@(discountDate!=null && discountDate>DateTime.Now?item.DiscountPrice:item.Price)
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    @{decimal? subTotal = Model.SizeColorToProducts.Sum(s => s.DiscountDate != null && s.DiscountDate > DateTime.Now ? s.DiscountPrice : s.Price);}
+                                                    <tr class="cart-subtotal">
+                                                        <th>Subtotal</th>
+                                                        <td>
+                                                            <span class="woocommerce-Price-amount amount">
+                                                                <span class="woocommerce-Price-currencySymbol">$</span>@subTotal
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr class="order-total">
+                                                        <th>Sheeping</th>
+                                                        <td>
+                                                            <strong>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    @if (subTotal >= 100)
+                                                                    {
+                                                                        <span class="woocommerce-Price-currencySymbol">Free</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="woocommerce-Price-currencySymbol">$</span><span>10</span>
+                                                                    }
+                                                                </span>
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="order-total">
+                                                        <th>Total</th>
+                                                        <td>
+                                                            <strong>
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    @if (subTotal >= 100)
+                                                                    {
+                                                                        <span class="woocommerce-Price-currencySymbol">$</span>@subTotal
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span class="woocommerce-Price-currencySymbol">$</span>@(subTotal+10)
+                                                                    }
+                                                                </span>
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tfoot>
+                                            </table>
+
+                                            <div id="payment" class="woocommerce-checkout-payment">
+                                                <div class="form-row place-order">
+                                                    <button type="submit" class="button alt"
+                                                            id="place_order"
+                                                            data-value="Place order">
+                                                        Place order
+                                                    </button>
+
+                                                    @*<input type="hidden" id="woocommerce-process-checkout-nonce"
+                                                           name="woocommerce-process-checkout-nonce"
+                                                           value="a1d2cbc4f5"><input type="hidden"
+                                                                                     name="_wp_http_referer"
+                                                                                     value="/?wc-ajax=update_order_review">*@
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- #content -->
